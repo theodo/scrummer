@@ -110,3 +110,8 @@ textarea.mod-list-name.list-header-name {
   padding: 0px 3px;
   border-radius: 5px;
 }
+
+.scrummer-badges {
+  display: flex;
+  padding-bottom: 8px;
+}
