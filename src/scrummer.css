@@ -22,6 +22,7 @@
     #33b5e0 50%
   ); /* W3C */
   border-radius: 5px;
+  margin-left: 5px;
 }
 
 .scrummer-post-points,
@@ -109,4 +110,8 @@ textarea.mod-list-name.list-header-name {
   margin-right: 3px;
   padding: 0px 3px;
   border-radius: 5px;
+}
+
+div[data-testid='list-header'], h2[data-testid='list-name'] {
+  min-height: 70px;
 }

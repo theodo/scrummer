@@ -62,16 +62,16 @@ let listChangeObserver = new MutationObserver(function(mutations) {
 
     // If the list was modified, recalculate
     if (
-      mutation.target.classList.contains('list-cards') ||
-      mutation.target.classList.contains('list-header-num-cards') ||
-      mutation.target.classList.contains('js-list-sortable')
+      mutation.target.getAttribute("data-testid") === 'list-cards' ||
+      mutation.target.getAttribute("data-testid") === 'lists' ||
+      mutation.target.classList.contains('list-header-num-cards')
     ) {
       setTimeout(calculatePointsForBoardDebounced);
       return;
     }
 
     // If a single card's content is mutated
-    if (mutation.target.classList.contains('js-card-name')) {
+    if (mutation.target.getAttribute("data-testid") === 'card-name') {
       mutation.target.setAttribute('data-mutated', 1);
 
       setTimeout(calculatePointsForBoardDebounced);
@@ -156,7 +156,7 @@ const insertDataAggregationInElement = (
         let badge = findOrInsertSpan(
           elementInsertSlot,
           cssClass,
-          elementInsertSlot.querySelector('.js-list-name-input')
+          elementInsertSlot.querySelector('[data-testid="quick-card-editor-card-title"]')
         );
         badge.textContent = formatPoints(dataToInsert[dataIdentifier]);
       }
@@ -170,20 +170,22 @@ const calculatePointsForCard = card => {
   let contentMutated = false;
   const titleDataConfiguration = getTitleDataConfiguration(settings);
 
-  let cardNameElement = card.querySelector('.js-card-name');
+  let cardNameElement = card.querySelector('[data-testid="card-name"]');
   if (!cardNameElement) {
     return getDefaultValueFromConfig(titleDataConfiguration);
   }
 
-  let originalTitle = card.getAttribute('data-original-title');
-
-  let cardShortId = cardNameElement.querySelector('.card-short-id');
+  let originalTitle = ''
+  const originalHref = cardNameElement.getAttribute('href');
+  const cardShortId =  originalHref.split('/')[3].split('-')[0];
   if (
     settings.showCardNumbers &&
-    cardShortId &&
-    !cardShortId.classList.contains('scrummer-card-id')
+    cardShortId
   ) {
-    cardShortId.classList.add('scrummer-card-id');
+    const shortIdSpan = document.createElement('span')
+    shortIdSpan.innerHTML = cardShortId;
+    shortIdSpan.classList.add('scrummer-card-id');
+    cardNameElement.parentNode.insertBefore(shortIdSpan, cardNameElement);
   }
 
   if (!originalTitle || cardNameElement.getAttribute('data-mutated') == 1) {
@@ -258,16 +260,16 @@ const calculatePointsForList = list => {
     attributes: false,
     subtree: true
   });
-  listChangeObserver.observe(list.querySelector('.list-header-num-cards'), {
+  listChangeObserver.observe(list.querySelector('[data-testid="list-name"]'), {
     attributes: true
   });
 
   titleDataConfiguration = getTitleDataConfiguration(settings);
   const listData = insertDataAggregationInElement(
     list,
-    '.list-card:not(.hide)',
+    '[data-testid="list-card"]',
     calculatePointsForCard,
-    '.js-list-header',
+    '[data-testid="list-name"]',
     titleDataConfiguration
   );
   return listData;
@@ -277,13 +279,14 @@ const calculatePointsForBoard = () => {
   titleDataConfiguration = getTitleDataConfiguration(settings);
   insertDataAggregationInElement(
     document,
-    '.list',
+      '[data-testid="list-wrapper"]',
     calculatePointsForList,
     '.js-board-header',
     titleDataConfiguration
   );
 
-  listChangeObserver.observe(document.querySelector('.js-list-sortable'), {
+
+  listChangeObserver.observe(document.querySelector(  '[data-testid="lists"]'), {
     childList: true,
     characterData: false,
     attributes: false
@@ -308,7 +311,7 @@ const debounce = (func, wait, immediate) => {
 };
 
 const calculatePointsForBoardDebounced = () => {
-  debounce(calculatePointsForBoard, 100)();
+  debounce(calculatePointsForBoard, 2000)();
 };
 
 const buildPickerRow = (
@@ -476,7 +479,7 @@ const insertDataInTitle = (
 };
 
 const checkForLists = () => {
-  if (document.querySelectorAll('.list').length > 0) {
+  if (document.querySelectorAll('[data-testid="list-wrapper"]').length > 0) {
     calculatePointsForBoard();
 
     if (settings.showPicker) {
