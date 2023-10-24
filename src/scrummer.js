@@ -196,19 +196,26 @@ const calculatePointsForCard = card => {
   const titleDataConfiguration = getTitleDataConfiguration(settings);
 
   let cardNameElement = card.querySelector(MAPPING_SELECTORS.cardName);
+
   if (!cardNameElement) {
     return getDefaultValueFromConfig(titleDataConfiguration);
   }
 
   let originalTitle = card.getAttribute('data-original-title');
 
-  let cardShortId = cardNameElement.querySelector('.card-short-id');
+  let cardShortId = cardNameElement.parentNode.querySelector('.scrummer-card-id');
+  const originalHref = cardNameElement.getAttribute('href');
+  const cardShortIdValue =  originalHref.split('/')[3].split('-')[0];
+
   if (
     settings.showCardNumbers &&
-    cardShortId &&
-    !cardShortId.classList.contains('scrummer-card-id')
+    cardShortIdValue &&
+      !cardShortId
   ) {
-    cardShortId.classList.add('scrummer-card-id');
+    const shortIdSpan = document.createElement('span')
+    shortIdSpan.innerHTML = cardShortIdValue;
+    shortIdSpan.classList.add('scrummer-card-id');
+    cardNameElement.parentNode.insertBefore(shortIdSpan, cardNameElement);
   }
 
   if (!originalTitle || cardNameElement.getAttribute('data-mutated') == 1) {
