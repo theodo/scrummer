@@ -203,7 +203,7 @@ const calculatePointsForCard = card => {
 
   // create a span to display the card number
   const cardNumber = extractCardNumberFromCardName(cardNameElement);
-  if(cardNumber) {
+  if(cardNumber !== null && cardNumber !== '') {
     const cardNumberElement = findOrInsertSpan(
       cardNameElement,
       'scrummer-card-id',
