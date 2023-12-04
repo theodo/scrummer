@@ -202,15 +202,17 @@ const calculatePointsForCard = card => {
   }
 
   // create a span to display the card number
-  const cardNumber = extractCardNumberFromCardName(cardNameElement);
-  if(cardNumber !== null && cardNumber !== '') {
-    const cardNumberElement = findOrInsertSpan(
-      cardNameElement,
-      'scrummer-card-id',
-      cardNameElement.lastChild
-    );
+  if(settings.showCardNumbers) {
+    const cardNumber = extractCardNumberFromCardName(cardNameElement);
+    if(cardNumber !== null && cardNumber !== '') {
+      const cardNumberElement = findOrInsertSpan(
+        cardNameElement,
+        'scrummer-card-id',
+        cardNameElement.lastChild
+      );
 
-    cardNumberElement.textContent = '#' + cardNumber;
+      cardNumberElement.textContent = '#' + cardNumber;
+    }
   }
 
   let originalTitle = card.getAttribute('data-original-title');
