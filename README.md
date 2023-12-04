@@ -47,13 +47,13 @@ To get started with developing your own additions to this plugin, run this comma
 tools/make-firefox.sh
 ```
 
-After this, install JPM:
+After this, install Web Ext:
 
 ```
-npm install jpm --global
+npm install web-ext --global
 ```
 
-With JPM, you can run the plugin in a debug environment. Change your directory to `dist/build/scrummer.firefox` and run `jpm run`. Now open your Trello board to see if your changes are working as expected. Happy coding!
+With Web Ext, you can run the plugin in a debug environment. Change your directory to `dist/build/scrummer.firefox` and run `web-ext run`. Now open your Trello board to see if your changes are working as expected. Happy coding!
 
 ## Developing and testing Safari
 
