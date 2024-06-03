@@ -12,7 +12,7 @@
   ],
   "permissions": ["storage"],
   "manifest_version": 3,
-  "browser_action": {
+  "action": {
     "default_icon": {
       "48": "img/icon48.png",
       "128": "img/icon128.png",
