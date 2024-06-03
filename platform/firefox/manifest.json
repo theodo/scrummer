@@ -5,21 +5,13 @@
   "content_scripts": [
     {
       "run_at": "document_end",
-      "matches": [
-        "https://trello.com/*"
-      ],
-      "js": [
-        "scrummer.js"
-      ],
-      "css": [
-        "scrummer.css"
-      ]
+      "matches": ["https://trello.com/*"],
+      "js": ["scrummer.js"],
+      "css": ["scrummer.css"]
     }
   ],
-  "permissions": [
-    "storage"
-  ],
-  "manifest_version": 2,
+  "permissions": ["storage"],
+  "manifest_version": 3,
   "browser_action": {
     "default_icon": {
       "48": "img/icon48.png",
